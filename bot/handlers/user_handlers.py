@@ -20,6 +20,14 @@ async def user_start(message: types.Message):
     await message.answer(text, reply_markup=reply.get_reply_lang_keyboard())
 
 
+# Shows help information
+async def user_help(message: types.Message):
+    text = "To start translating you must specify the language that you want to translate into. "
+    text += "After that your every message will be translated. You can change language using telegram keyboard buttons."
+    text += "Also you can check out your history and clear it as well."
+    await message.answer(text)
+
+
 # Change user current language
 async def change_lang(message: types.Message, state: FSMContext):
     lang_code = message.text.lower()[:2]
@@ -102,6 +110,7 @@ async def clear_user_history(message: types.Message):
 
 def register_user_handlers(dp: Dispatcher):
     dp.register_message_handler(user_start, commands=["start"], state="*", content_types=['text'])
+    dp.register_message_handler(user_help, commands=["help"], state="*", content_types=['text'])
     dp.register_message_handler(change_lang, state=LangStates.LANG_CHANGED, content_types=['text'])
     dp.register_message_handler(choose_feature, state=LangStates.LANG_SET, content_types=['text'])
     dp.register_message_handler(std_reply, state=None, content_types=['text'])
