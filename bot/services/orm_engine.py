@@ -2,6 +2,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 from bot.models import History, CurrentUserLanguage
 
+# Initialize db connection
 engine = create_engine('sqlite:///translator_db.db?check_same_thread=False')
 
 

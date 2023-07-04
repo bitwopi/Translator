@@ -3,3 +3,4 @@
 /.env
 /.idea
 translator_db.db
+.pytest_cache

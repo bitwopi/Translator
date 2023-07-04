@@ -10,6 +10,7 @@ IAM_TOKEN = os.getenv('IAM_TOKEN')
 FOLDER_ID = os.getenv('FOLDER_ID')
 
 
+# Translates texts
 async def transfer(target_lang: str, text: str):
     try:
         async with ClientSession() as session:

@@ -13,13 +13,14 @@ logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 
 
-# Start communication with user
+# Starts communication with user
 async def user_start(message: types.Message):
     text = "Hi, I'm Translator and i do what i do - translating\nTo start translating please choose one of languages"
     await LangStates.LANG_CHANGED.set()
     await message.answer(text, reply_markup=reply.get_reply_lang_keyboard())
 
 
+# Change user current language
 async def change_lang(message: types.Message, state: FSMContext):
     lang_code = message.text.lower()[:2]
     response = save_current_user_lang(user_id=message.from_user.id, current_lang_code=lang_code)
@@ -33,6 +34,7 @@ async def change_lang(message: types.Message, state: FSMContext):
         await state.finish()
 
 
+# Translates message text to current user language
 async def translate(message: types.Message):
     text = message.text
     lang_code = get_user_current_language(message.from_user.id)[0]
@@ -66,6 +68,7 @@ async def choose_feature(message: types.Message, state: FSMContext):
         await translate(message)
 
 
+# Replies user if he must set new language
 async def std_reply(message: types.Message, state: FSMContext):
     if get_user_current_language(message.from_user.id):
         await LangStates.LANG_SET.set()
@@ -75,6 +78,7 @@ async def std_reply(message: types.Message, state: FSMContext):
         await message.answer("Please choose target language", reply_markup=reply.get_reply_lang_keyboard())
 
 
+# Shows user's history
 async def show_user_history(message: types.Message):
     data = get_user_history(message.from_user.id)
     text = ""
@@ -86,6 +90,7 @@ async def show_user_history(message: types.Message):
         await message.answer("I haven't translated for you earlier. Lets do this 💪")
 
 
+# Clears user's history
 async def clear_user_history(message: types.Message):
     if not delete_user_history(message.from_user.id):
         await message.answer("Your history successfully cleared.\nDon't worry)")
